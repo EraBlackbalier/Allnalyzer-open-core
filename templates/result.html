@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Allnalyzer</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 24px;
+      }
+      h1 {
+        margin: 0 0 16px;
+      }
+      h2 {
+        margin: 20px 0 8px;
+      }
+      .table-wrap {
+        overflow-x: auto;
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+      th,
+      td {
+        padding: 8px 10px;
+        border: 1px solid #ccc;
+        text-align: left;
+        vertical-align: top;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Allnalyzer</h1>
+
+    {% if result.get('status') == 'success' %}
+      {% if result.get('info_message') %}
+        <p>{{ result.get('info_message') }}</p>
+      {% endif %}
+
+      <h2>Esquema detectado</h2>
+      <p>Archivo: {{ result.get('original_name') }}</p>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Columna</th>
+              <th>Tipo detectado</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for column, dtype in result.get('schema', {}).items() %}
+              <tr>
+                <td>{{ column }}</td>
+                <td>{{ dtype }}</td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+
+      <h2>Muestra de 5 filas</h2>
+      {% set preview = result.get('preview_data', []) %}
+      {% if preview %}
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                {% for column in preview[0].keys() %}
+                  <th>{{ column }}</th>
+                {% endfor %}
+              </tr>
+            </thead>
+            <tbody>
+              {% for row in preview %}
+                <tr>
+                  {% for value in row.values() %}
+                    <td>{{ value }}</td>
+                  {% endfor %}
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      {% else %}
+        <p>No hay muestra disponible.</p>
+      {% endif %}
+
+      <p><a href="/">Subir otro archivo</a></p>
+    {% else %}
+      <h2>Error</h2>
+      <p>{{ result.get('error') }}</p>
+      <p><a href="/">Subir otro archivo</a></p>
+    {% endif %}
+  </body>
+</html>

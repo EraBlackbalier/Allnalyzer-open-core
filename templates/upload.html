@@ -1,0 +1,19 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Allnalyzer</title>
+  </head>
+  <body>
+    <h1>Allnalyzer</h1>
+    <form method="post" action="/upload" enctype="multipart/form-data">
+      <p>
+        <label for="file">Archivo</label>
+        <input id="file" type="file" name="file" accept=".csv,.xls,.xlsx" required>
+      </p>
+
+      <button type="submit">Subir</button>
+    </form>
+  </body>
+</html>
